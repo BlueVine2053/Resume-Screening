@@ -39,7 +39,11 @@ def main():
     score = keyword_match(resume, job_description)
 
     print("Resume Matching Score:", score, "%")
-
+    
+    if score >= 50:
+        print("Matching Result: Potential Match")
+    else:
+        print("Matching Result: Low Match")
 
 if __name__ == "__main__":
     main()
