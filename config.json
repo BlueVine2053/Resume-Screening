@@ -1,0 +1,26 @@
+
+{
+  "project_name": "Intelligent Resume Screening and Job Matching System",
+  "version": "1.0.0",
+  "environment": "development",
+  "language": "Python",
+  "matching_methods": {
+    "v1": {
+      "name": "Keyword-Based Matching",
+      "method": "Keyword Overlap",
+      "enabled": true
+    },
+    "v2": {
+      "name": "Semantic Matching",
+      "method": "Sentence Embeddings and Cosine Similarity",
+      "enabled": true
+    }
+  },
+  "data": {
+    "format": "CSV",
+    "source": "Hugging Face"
+  },
+  "evaluation": {
+    "compare_matching_methods": true
+  }
+}
