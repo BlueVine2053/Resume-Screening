@@ -2,7 +2,7 @@
 
 A Python-based application that evaluates resume-to-job matching using natural language processing and machine learning techniques.
 
-Educational project comparing **V1 keyword overlap** with **V2 TF-IDF cosine similarity** on labeled resume–job pairs. It uses Python/scikit-learn locally and **does not make AI API calls**. Scores are not hiring decisions.
+This project compares **V1 keyword overlap** with **V2 TF-IDF cosine similarity** on labeled resume–job pairs. It uses Python/scikit-learn locally and **does not make AI API calls**. Scores are not hiring decisions.
 
 ## Repository contents
 
@@ -16,7 +16,7 @@ Educational project comparing **V1 keyword overlap** with **V2 TF-IDF cosine sim
 | `tests/` | 18 automated tests |
 | `data/train.csv`, `data/test.csv` | **Not included**; download these from Hugging Face before rerunning the experiment |
 | `data/sample_pairs.csv` | Small synthetic demo dataset; **not** research evidence |
-| `results/final/` | Measured metrics, all 1,759 predictions, saved matcher and test report |
+| `results/final/` | Recorded evaluation metrics and test report; generated predictions and saved model are excluded from GitHub |
 
 ## Installation
 
@@ -84,7 +84,7 @@ When `results/final/model.joblib` exists, Streamlit loads the saved trained matc
 
 ## Verification and remaining work
 
-- **18 automated tests passed** in the recorded run; the tests were rerun while preparing this package.
+- **18 automated tests passed** during project verification. The recorded test results are documented in `results/final/TEST_REPORT.md`.
 - Full evaluation was previously repeated with byte-identical metrics JSON and prediction CSV using the same data and settings.
 - Overlap auditing and saved-model scoring checks are included in automated tests.
 - **Browser-level Streamlit testing remains pending**; do not report it as passed.
