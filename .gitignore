@@ -1,0 +1,30 @@
+# Python cache
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Environment variables and secrets
+.env
+.env.*
+
+# Generated model and prediction files
+*.joblib
+predictions.csv
+test_predictions.csv
+
+# Editor settings
+.vscode/
+.idea/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Original dataset files
+data/train.csv
+data/test.csv
