@@ -23,3 +23,7 @@ predictions.csv
 # Operating system files
 .DS_Store
 Thumbs.db
+
+# Original dataset files
+data/train.csv
+data/test.csv
