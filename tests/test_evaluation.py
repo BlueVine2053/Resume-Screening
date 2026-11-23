@@ -6,7 +6,7 @@ from src.evaluate import mcnemar_exact, predict, run, split_data
 
 @pytest.fixture
 def data():
-    # 45 unique examples with three classes; no fabricated real-world performance claims.
+    # Create 45 sample resume-job pairs across three classification categories.
     rows = []
     for i in range(15):
         rows.extend([
