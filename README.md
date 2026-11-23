@@ -1,7 +1,6 @@
 # Intelligent Resume Screening and Job Matching System
 
-**CISC 594 — Software Testing Principles and Techniques**  
-**Samiksha Pradhan — November 2026**
+A Python-based application that evaluates resume-to-job matching using natural language processing and machine learning techniques.
 
 Educational project comparing **V1 keyword overlap** with **V2 TF-IDF cosine similarity** on labeled resume–job pairs. It uses Python/scikit-learn locally and **does not make AI API calls**. Scores are not hiring decisions.
 
