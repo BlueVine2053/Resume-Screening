@@ -50,7 +50,7 @@ The observed dataset lengths were below this limit, and no tokenless inputs were
 
 The project includes automated Python tests covering the core application logic and Streamlit interface.
 
-**Recorded CR-002 result: 33 automated tests passed in 7.27 seconds.**
+**Final recorded CR-002 result: 34 automated tests passed.**
 
 ### Test Coverage by Version
 
@@ -58,7 +58,7 @@ The project includes automated Python tests covering the core application logic 
 |---|---:|
 | v0.1.0 | 18 |
 | v0.1.1 | 19 |
-| CR-002 — target v0.1.2 | 33 |
+| v0.1.2 — CR-002 | 34 |
 
 Existing testing covered:
 
@@ -76,20 +76,22 @@ Python syntax compilation also passed during previous project verification.
 
 ### CR-002 Additional Automated Testing
 
-CR-002 introduced 11 additional matcher validation test cases and 3 automated Streamlit interface tests.
+CR-002 retained 19 existing tests, including one updated vocabulary test, and introduced 11 additional matcher validation test cases and 4 automated Streamlit interface tests.
 
 | Test category | Test cases | Result |
 |---|---:|---|
-| Existing regression tests | 19 | Passed |
+| Existing regression tests (one updated) | 19 | Passed |
 | Invalid input types and whitespace-only text | 4 | Passed |
 | Tokenless input validation | 4 | Passed |
 | Maximum input-length boundary | 1 | Passed |
 | Oversized input rejection | 1 | Passed |
 | Unknown-word scoring behavior | 1 | Passed |
-| Automated Streamlit interface tests | 3 | Passed |
-| **Total** | **33** | **Passed** |
+| Automated Streamlit interface tests | 4 | Passed |
+| **Total** | **34** | **Passed** |
 
 The additional matcher tests verify that invalid inputs are rejected, valid inputs at the maximum character limit are accepted, oversized inputs are rejected without exposing the submitted text in the error message, and existing unknown-word scoring behavior is preserved.
+
+The additional interface tests verify that the required notices are displayed and that invalid tokenless resume input produces an error without displaying matching scores.
 
 ### Regression Test Failure and Resolution
 
@@ -97,11 +99,19 @@ The initial CR-002 regression test execution produced 32 passed tests and 1 fail
 
 The existing training-only vocabulary test used `secret_test_token` as an unseen input. The updated validation rejected this input because the existing keyword tokenizer did not recognize it as a valid token.
 
+The tokenizer uses the regular expression `\b[a-z0-9]+\b`. Because underscores are treated as word characters, underscore-joined words such as `secret_test_token` do not produce recognizable tokens under this expression.
+
+Text consisting only of such underscore-joined words is therefore rejected by the updated shared input validation because V1's tokenizer does not recognize it.
+
 The test input was changed to `secrettesttoken`, preserving the original objective of verifying that scoring unseen text does not modify the trained vocabulary.
 
 No changes to the matching algorithms or tokenizer were required to resolve the failure.
 
-The complete test suite was executed again, resulting in 33 passed tests.
+The complete test suite was executed again, resulting in 33 passed tests in 7.27 seconds.
+
+Following the final code review, an additional automated Streamlit test was added to verify invalid-input error handling. Leading blank lines were also removed from three Python files without changing their functionality.
+
+The final regression test execution confirmed that all 34 automated tests passed.
 
 ## 4. Evaluation Results
 
@@ -203,6 +213,8 @@ The prediction CSV comparison included all 1,759 rows, pair identifiers, actual 
 
 These checks confirmed that CR-002 did not change the experimental results or individual predictions for the evaluated dataset.
 
+The subsequent addition of the fourth automated interface test and removal of leading blank lines did not modify the matching algorithms or evaluation logic.
+
 ### Backward Model Compatibility
 
 The saved v0.1.1 matcher and the newly trained CR-002 matcher were loaded under the updated source code.
@@ -252,17 +264,37 @@ Screenshots and a separate browser-test log are not included in this report.
 
 ### CR-002 Automated Interface Testing
 
-Three automated interface tests were added using Streamlit AppTest.
+Four automated interface tests were added using Streamlit AppTest.
 
 | Test | Expected behavior | Result |
 |---|---|---|
-| Persistent disclaimer | Disclaimer is visible before matching scores are calculated | Passed |
+| Persistent disclaimer | Disclaimer is displayed before matching scores are calculated | Passed |
 | Matching-method labels | V1 keyword matching and V2 TF-IDF cosine similarity are identified | Passed |
 | Keyword-matching limitation | Exact-word matching, synonym limitations, and skill interpretation limitations are disclosed | Passed |
+| Invalid-input error handling | Tokenless resume input produces the expected validation error without displaying matching scores or causing an unhandled exception | Passed |
 
-The automated interface tests confirm that the required notices are displayed when the application initially loads.
+The first three automated interface tests confirm that the required notices are present when the application initially loads.
 
-These tests verify the presence and visibility of the notices. They do not establish whether users understand or correctly interpret the matching scores.
+### Automated Invalid-Input Verification
+
+The fourth interface test verifies the application's response to invalid tokenless resume input.
+
+The following inputs were used:
+
+- Resume: `!!!`
+- Job description: `python developer`
+
+The test entered both values into the Streamlit text areas and clicked the matching-score comparison button.
+
+The test verified that:
+
+- The application displayed the expected validation error: `Resume contains no recognizable English letters or digits`.
+- No matching-score metrics were displayed.
+- No unhandled application exception occurred.
+
+The test passed, providing automated evidence that invalid tokenless input is rejected through the user interface as well as through the underlying matcher.
+
+The notice-related tests verify the presence of the required information in the interface. They do not establish whether users understand or correctly interpret the matching scores.
 
 ## 8. Test Execution Commands
 
@@ -308,16 +340,29 @@ python -m src.final_experiment --train data/train.csv --test data/test.csv --out
 
 The separate output directories preserved both sets of generated files for comparison.
 
+Following the final review corrections, the complete automated test suite was executed again:
+
+```bash
+python -m pytest -q
+```
+
+All 34 automated tests passed.
+
 ## 9. Test Summary
 
 The recorded testing and evaluation established the following:
 
 - The v0.1.1 baseline passed 19 automated Python tests.
-- CR-002 passed 33 automated Python tests in 7.27 seconds.
+- The initial CR-002 regression execution identified one existing test requiring an input adjustment.
+- The corrected regression suite passed 33 automated tests in 7.27 seconds.
+- Following final review corrections and the addition of an automated UI validation test, all 34 automated tests passed.
+- The final test suite includes 19 existing tests (one updated), 11 additional matcher validation tests, and 4 automated Streamlit interface tests.
 - Updated input validation rejects invalid input types, blank text, tokenless text, and oversized inputs.
+- Text consisting only of underscore-joined words that produce no recognizable tokens is rejected.
 - Valid inputs at the maximum character limit are accepted.
 - Existing batch input-length validation and unknown-word scoring behavior are preserved.
 - Automated Streamlit tests confirmed the presence of the persistent disclaimer, matching-method labels, and keyword-matching limitation notice.
+- Automated interface testing confirmed that invalid tokenless resume input produces an error without displaying matching scores or causing an unhandled exception.
 - Both V1 keyword overlap and V2 TF-IDF cosine similarity were evaluated.
 - V2 achieved higher overall accuracy on the evaluated test pairs.
 - V1 achieved a slightly higher macro F1 score.
