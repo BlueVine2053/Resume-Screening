@@ -13,7 +13,7 @@ This project compares **V1 keyword overlap** with **V2 TF-IDF cosine similarity*
 | `src/evaluate.py` | General split-based evaluation and statistical comparison |
 | `src/final_experiment.py` | Final evaluation using separate training and test CSV files, overlap auditing, and model export |
 | `app.py` | Streamlit application for demonstrating resume-to-job matching |
-| `tests/` | 33 automated Python tests, including matcher validation and Streamlit interface tests |
+| `tests/` | 34 automated Python tests, including matcher validation and Streamlit interface tests |
 | `data/train.csv`, `data/test.csv` | Original dataset files downloaded separately from Hugging Face |
 | `data/sample_pairs.csv` | Synthetic sample dataset for demonstration |
 | `results/final/` | Recorded evaluation metrics and test report; generated predictions and saved model are excluded from GitHub |
@@ -79,6 +79,8 @@ Both matching methods require valid, nonempty text inputs. The matcher rejects:
 - Text without recognizable English letter or digit tokens.
 - Inputs exceeding 100,000 characters per resume or job description.
 - Batch inputs containing unequal numbers of resumes and job descriptions.
+
+Text consisting only of underscore-joined words, such as `secret_test_token`, is also rejected because V1's tokenizer does not recognize such words as valid tokens.
 
 V1 uses exact-word matching and does not recognize synonyms. A low similarity score does not establish that a candidate lacks a particular skill.
 
@@ -206,10 +208,11 @@ A persistent disclaimer and keyword-matching limitation notice are displayed bef
 
 ## Testing and Verification
 
-- **33 automated Python tests passed in 7.27 seconds** during CR-002 verification.
-- The test suite includes 19 existing tests, 11 additional matcher validation tests, and 3 automated Streamlit interface tests.
+- **34 automated Python tests passed** during CR-002 verification.
+- The test suite includes 19 existing tests (one updated), 11 additional matcher validation tests, and 4 automated Streamlit interface tests.
 - Automated tests cover data validation, column mapping, overlap auditing, saved-model scoring consistency, batch input-length validation, invalid input types, tokenless text, and maximum input-length boundaries.
-- Streamlit interface tests verify the persistent disclaimer, matching-method labels, and keyword-matching limitation notice.
+- Streamlit interface tests verify the persistent disclaimer, matching-method labels, keyword-matching limitation notice, and invalid-input error handling without displaying matching scores.
+- The existing training-only vocabulary test was updated to use a valid unseen token while preserving its original testing objective.
 - The cleaned training, validation, and test datasets were checked against the updated input-validation requirements. No inputs exceeded the character limit or contained tokenless text.
 - The final experiment was repeated using the same datasets and random seed of 42.
 - Programmatic comparison confirmed that the complete parsed metrics JSON and all 1,759 prediction rows, including matching scores and predicted classifications, were identical to the v0.1.1 baseline.
@@ -240,7 +243,7 @@ Software release versions are tracked separately from the V1 and V2 matching-met
 |---|---|
 | v0.1.0 | Initial project baseline with 18 automated tests |
 | v0.1.1 | CR-001: Batch input-length validation with 19 automated tests |
-| v0.1.2 (planned) | CR-002: Strengthened input validation, persistent interface notices, expanded automated testing, and documentation improvements |
+| v0.1.2 | CR-002: Strengthened input validation, persistent interface notices, expanded automated testing, and documentation improvements |
 
 CR-002 verification confirmed that the validation and interface improvements did not change the recorded experimental metrics or individual prediction results.
 
