@@ -1,4 +1,3 @@
-
 """Deterministic baseline matchers. No model API or hiring decisions."""
 import re
 from collections import Counter
