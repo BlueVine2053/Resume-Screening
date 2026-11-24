@@ -1,3 +1,4 @@
+
 """Deterministic baseline matchers. No model API or hiring decisions."""
 import re
 from collections import Counter
@@ -6,15 +7,37 @@ from sklearn.feature_extraction.text import TfidfVectorizer, ENGLISH_STOP_WORDS
 from sklearn.metrics.pairwise import cosine_similarity
 
 TOKEN_RE = re.compile(r"(?u)\b[a-z0-9]+\b")
+MAX_TEXT_CHARS = 100_000
+
 
 def tokens(text):
     return set(TOKEN_RE.findall(str(text).lower()))
+
 
 def keyword_score(resume, job, vocabulary):
     terms = tokens(job) & vocabulary
     if not terms:
         return None  # Not scoreable, never silently count as a zero
     return len(tokens(resume) & terms) / len(terms)
+
+
+def validate_text(text, field):
+    if not isinstance(text, str):
+        raise ValueError(f"{field} must be nonempty text")
+
+    if not text.strip():
+        raise ValueError(f"{field} must be nonempty text")
+
+    if len(text) > MAX_TEXT_CHARS:
+        raise ValueError(
+            f"{field} must not exceed {MAX_TEXT_CHARS:,} characters"
+        )
+
+    if not tokens(text):
+        raise ValueError(
+            f"{field} contains no recognizable English letters or digits"
+        )
+
 
 class Matcher:
     def __init__(self, training_jobs, training_resumes=None, max_keywords=200):
@@ -31,8 +54,9 @@ class Matcher:
         self.vectorizer.fit(jobs + resumes)  # Training texts only; no validation/test text
 
     def score(self, resume, job):
-        if not isinstance(resume, str) or not isinstance(job, str) or not resume.strip() or not job.strip():
-            raise ValueError("Resume and job description must be nonempty text")
+        validate_text(resume, "Resume")
+        validate_text(job, "Job description")
+
         vectors = self.vectorizer.transform([resume, job])
         if vectors[0].nnz == 0 or vectors[1].nnz == 0:
             v2 = 0.0
