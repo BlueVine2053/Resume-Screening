@@ -13,7 +13,7 @@ This project compares **V1 keyword overlap** with **V2 TF-IDF cosine similarity*
 | `src/evaluate.py` | General split-based evaluation and statistical comparison |
 | `src/final_experiment.py` | Final evaluation using separate training and test CSV files, overlap auditing, and model export |
 | `app.py` | Streamlit application for demonstrating resume-to-job matching |
-| `tests/` | 18 automated Python tests |
+| `tests/` | 19 automated Python tests |
 | `data/train.csv`, `data/test.csv` | Original dataset files downloaded separately from Hugging Face |
 | `data/sample_pairs.csv` | Synthetic sample dataset for demonstration |
 | `results/final/` | Recorded evaluation metrics and test report; generated predictions and saved model are excluded from GitHub |
@@ -192,8 +192,8 @@ The application displays similarity scores rather than hiring recommendations.
 
 ## Testing and Verification
 
-- **18 automated Python tests passed** during project verification.
-- Automated tests cover data validation, column mapping, overlap auditing, and saved-model scoring consistency.
+- **19 automated Python tests passed** during project verification.
+- Automated tests cover data validation, column mapping, overlap auditing, saved-model scoring consistency, and batch input-length validation.
 - The full evaluation was repeated using the same inputs and settings, producing byte-identical metrics JSON and prediction CSV files.
 - Python syntax compilation passed.
 - Manual Streamlit application testing covered resume and job-description text entry, matching results, and blank-input validation.
