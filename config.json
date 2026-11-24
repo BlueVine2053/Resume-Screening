@@ -1,8 +1,7 @@
-
 {
   "project": {
     "name": "Intelligent Resume Screening and Job Matching System",
-    "version": "0.1.0"
+    "version": "0.1.2"
   },
   "matching_methods": {
     "V1": "Keyword Overlap Matching",
