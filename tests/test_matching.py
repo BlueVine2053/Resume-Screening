@@ -33,3 +33,10 @@ def test_t7_empty_input(model):
 
 def test_unknown_text_vector_zero(model):
     assert model.score('zzzxxyyqq', 'zzzxxyyqq')['v2'] == 0.0
+
+def test_cr001_mismatched_input_lengths(model):
+    with pytest.raises(ValueError, match="same number of entries"):
+        model.score_pairs(
+            ['python analyst', 'java developer'],
+            ['python sql analyst']
+        )
