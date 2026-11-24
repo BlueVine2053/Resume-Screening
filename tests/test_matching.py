@@ -1,4 +1,3 @@
-
 import pytest
 from src.matching import Matcher, keyword_score, tokens, MAX_TEXT_CHARS
 
