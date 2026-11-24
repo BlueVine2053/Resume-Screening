@@ -1,4 +1,3 @@
-
 """Optional Streamlit demo. Scores are similarities, not hiring recommendations."""
 import pandas as pd
 import joblib
