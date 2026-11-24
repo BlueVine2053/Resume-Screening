@@ -36,7 +36,7 @@ The separate test dataset was not used to fit the keyword vocabulary, TF-IDF vec
 
 The project includes automated Python tests covering the core application logic.
 
-**Recorded result: 18 automated tests passed.**
+**Recorded result: 19 automated tests passed.**
 
 Testing covered:
 
@@ -48,6 +48,7 @@ Testing covered:
 - Dataset overlap auditing.
 - Saved-model scoring consistency.
 - Evaluation functionality.
+- Batch input-length validation for mismatched resume and job-description lists.
 
 Python syntax compilation also passed.
 
@@ -165,7 +166,7 @@ The original dataset files must be downloaded separately and saved as `data/trai
 
 The recorded testing and evaluation established the following:
 
-- **18 automated Python tests passed.**
+- **19 automated Python tests passed.**
 - Both V1 keyword overlap and V2 TF-IDF cosine similarity were evaluated.
 - V2 achieved higher overall accuracy on the evaluated test pairs.
 - V1 achieved a slightly higher macro F1 score.
