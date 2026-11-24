@@ -21,9 +21,9 @@ def test_t4_identical_known_text(model):
     assert model.score('java developer', 'java developer')['v2'] == pytest.approx(1.0)
 
 def test_t5_training_only_vocabulary(model):
-    assert 'secret_test_token' not in model.vectorizer.vocabulary_
-    model.score('secret_test_token', 'java developer')
-    assert 'secret_test_token' not in model.vectorizer.vocabulary_
+    assert 'secrettesttoken' not in model.vectorizer.vocabulary_
+    model.score('secrettesttoken', 'java developer')
+    assert 'secrettesttoken' not in model.vectorizer.vocabulary_
 
 def test_t6_same_function_repeatability(model):
     assert model.score('python analyst', 'python sql analyst') == model.score('python analyst', 'python sql analyst')
