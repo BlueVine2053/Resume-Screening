@@ -42,4 +42,6 @@ class Matcher:
                 'v2': float(np.clip(v2, 0.0, 1.0))}
 
     def score_pairs(self, resumes, jobs):
+        if len(resumes) != len(jobs):
+            raise ValueError("Resumes and jobs must have the same number of entries")
         return [self.score(r, j) for r, j in zip(resumes, jobs)]
